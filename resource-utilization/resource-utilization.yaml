@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resource-utilization-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resource-utilization
+  template:
+    metadata:
+      labels:
+        app: resource-utilization
+    spec:
+      containers:
+        - name: resource-utilization
+          image: resource-utilization:latest
+          ports:
+            - containerPort: 8082
+          imagePullPolicy: IfNotPresent
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: resource-utilization-service
+spec:
+  selector:
+    app: resource-utilization
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8082
